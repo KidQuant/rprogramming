@@ -31,7 +31,6 @@ names(data)[5] <- paste('Export')
 names(data)[6] <- paste('Imports')
 names(data)[7] <- paste('Salaries')
 
-
 names(data)
 
 data <- ts(data[, -1], start = c(1995,1), frequency = 4)
@@ -146,3 +145,16 @@ Gross_Capital_model %>%
        y= 'GDP (€)')+
   scale_x_continuous(breaks = seq(1995, 2020, 1)) +
   theme(axis.text.x = element_text(angle = 45, hjust =1))
+
+cap_fcst <- as.data.frame(forecast(Gross_Capital_model, h =8))
+cap_fcst$Indicator <- 'Gross Capital'
+cap_fcst$Period <- rownames(cap_fcst)
+
+#Exports
+
+exports_model <- auto.arima(data[, "Exports"],
+                            trace = FALSE, 
+                            ic = "aicc", 
+                            approximation = FALSE,
+                            stepwise = FALSE,
+                            lambda = "auto")
