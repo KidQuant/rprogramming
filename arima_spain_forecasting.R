@@ -107,3 +107,42 @@ gdp_fcst <- as.data.frame(forecast(arima_full, h = 8))
 gdp_fcst$Indicator <- 'GDP'
 gdp_fcst$Period <- rownames(gdp_fcst)
 gdp_fcst
+
+#Consumption
+
+consumption_model <- auto.arima(data[, "Consumption"], 
+                                trace = FALSE, 
+                                ic = "aicc", 
+                                approximation = FALSE,
+                                stepwise = FALSE,
+                                lambda = "auto")
+consumption_model %>%
+  forecast(h = 8) %>%
+  autoplot() +
+  labs(title = 'Spains quarterly Consumption forecast: ARIMA modelling',
+       subtitle = 'In million euro (€), for years 2018-2019',
+       y = 'GDP (€)')+
+  scale_x_continuous(breaks = seq(1995, 2020, 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+con_fcst <- as.data.frame(forecast(consumption_model, h = 8))
+con_fcst$Indicator <- 'Consumption'
+con_fcst$Period <-  rownames(con_fcst)
+
+#Gross Capital
+
+Gross_Capital_model <-  auto.arima(data[,'Gross Capital'],
+                                   trace = FALSE,
+                                   ic = 'aicc',
+                                   approximation =FALSE,
+                                   stepwise = FALSE,
+                                   lambda = 'auto')
+
+Gross_Capital_model %>%
+  forecast(h = 8) %>%
+  autoplot() +
+  labs(title = 'Spains quarterly Gross Capital forecast: ARIMA modelling',
+       subtitle = 'In million euro (€), for years 2018-19',
+       y= 'GDP (€)')+
+  scale_x_continuous(breaks = seq(1995, 2020, 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust =1))
