@@ -1,0 +1,30 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+#Getting packages & setting working directory
+```{r}
+install.packages(c('readxl','Rblpapi', 'xts', 'timeDate', 'timeSeries'))
+
+library('readxl'); library('Rblpapi'); library('xts'); library('timeDate'); library('timeSeries')
+
+setwd('C:/Users/as70906n/Documents/GitHub/rprogramming/')
+
+
+```
+
+
+#Connecting to Bloomberg API
+```{r}
+opt <- c('periodicitySelection' = 'DAILY')
+
+blpConnect()
+```
+
+
+
+```{r}
+
+```
+
