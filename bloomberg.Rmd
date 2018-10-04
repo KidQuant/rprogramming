@@ -1,8 +1,3 @@
----
-title: "R Notebook"
-output: html_notebook
----
-
 #Getting packages & setting working directory
 ```{r}
 install.packages(c('readxl','Rblpapi', 'xts', 'timeDate', 'timeSeries'))
@@ -23,8 +18,9 @@ blpConnect()
 ```
 
 
-
 ```{r}
+
+
 
 ```
 
