@@ -82,7 +82,7 @@ ggseasonplot(data[,'GDP'], year.labels = TRUE, year.labels.left = TRUE) +
 
 ```
 
-#Fit ARImA Model
+#Fit ARIMA Model
 
 ```{r}
 
