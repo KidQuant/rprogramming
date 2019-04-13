@@ -1,28 +1,47 @@
-install.packages(c("quantmod", "lattice", "timeSeries", "rugarch"))
+---
+title: "R Notebook"
+output: html_notebook
+---
+
 
 # Import the necessary libraries
+
+```{r}
+
+install.packages(c("quantmod", "lattice", "timeSeries", "rugarch"))
+
+
 library(quantmod)
 library(lattice)
 library(timeSeries)
 library(rugarch)
 
-# Obtain the S&P500 returns and truncate the NA value
+```
+
+
+# Obtain the S&P 500 returns and truncate the NA values
+
+```{r}
 
 getSymbols("^GSPC", from="1950-01-01")
 spReturns <-  diff(log(Cl(GSPC)))
 spReturns[as.character(head(index(Cl(GSPC)),1))] = 0
 
+```
+
+
 # Create the forecasts vector to store the predictions
 
+```{r}
 windowLength = 500
-foreLength = length(spReturns) - windowLength
+foreLength <-  length(spReturns) - windowLength
 forecasts <- vector(mode="character", length=foreLength)
 
 for (d in 0:foreLength){
 
   # obtain the S&P 500 rolling window for this day
   
-  spReturnsOffset = spReturns[(1+d):(windowLength + d)]
+  spReturnsOffset = spReturns[(1+d):(windowLength+d)]
   
   # Fit the ARIMA model
   final.aic <- Inf
@@ -83,8 +102,12 @@ for (d in 0:foreLength){
     print(paste(colnames(ind), ifelse(ind[1] < 0, -1, 1), sep=","))
   }
 }
+```
 
 # Output the CSV file to "forecast.csv"
+
+```{r}
+
 write.csv(forecasts, file="forecast.csv", row.names = FALSE)
 
 # Input the Python-refined CSV file AFTER CONVERSION
@@ -94,7 +117,12 @@ spArimaGarch = as.xts(
   )
 )
 
+```
+
 # Create the ARIMA+GARCH returns
+
+```{r}
+
 spIntersect = merge( apArimaGarch[,1], spReturns, all=F )
 spArimaGarchReturns = spIntersect[,1] * spIntersect[,2]
 
@@ -103,8 +131,26 @@ spArimaGarchCurve = log( cumprod( 1 + spArimaGarchReturns ) )
 spBuyHoldCurve = log( cumprod( 1 + spIntersect[, 2] ) )
 spCombinedCurve = merge( spArimaGarchCurve, spBuyHoldCurve, all=F)
 
+```
+
 # Plot the equity curves
 
+```{r}
+xyplot(
+  spCombinedCurve,
+  superpose=T,
+  col,c("darkred", "darkblue"),
+  lwd=2,
+  key=list(
+    text=list(
+      c("ARIMA+GARCH", "Buy & Hold")
+    ),
+    lines=list(
+      lwd=2, col=c("darkred", "darkblue")
+    )
+  )
+)
+```
 
 
 
