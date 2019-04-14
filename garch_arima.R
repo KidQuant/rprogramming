@@ -105,6 +105,19 @@ spCombinedCurve = merge( spArimaGarchCurve, spBuyHoldCurve, all=F)
 
 # Plot the equity curves
 
-
+xyplot(
+  spCombinedCurve,
+  superpose=T,
+  col=c("darkred", "darkblue"),
+  lwd=2,
+  key=list(
+    text=list(
+      c("ARIMA\GARCH", "Buy & Hold")
+    ),
+    lines=list(
+      lwd=2, col=c("darkred","darkblue")
+    )
+  )
+)
 
 
